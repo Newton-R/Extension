@@ -63,7 +63,7 @@ export function SettingsPanel({ open, onClose, onApply }: SettingsPanelProps) {
 
   return (
     <div
-      className="floating-panel w-[360px] max-h-[80vh] flex flex-col overflow-hidden bg-slate-950 text-slate-50"
+      className="floating-panel w-[360px] max-h-[80vh] flex flex-col overflow-hidden bg-background"
       style={style}
       role="dialog"
       aria-modal="true"

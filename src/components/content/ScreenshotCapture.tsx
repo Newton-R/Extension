@@ -1,17 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
-import { Check, X } from 'lucide-react';
-import { Modal } from '../../components/ui/Modal';
-import { Button } from '../../components/ui/Button';
-import { downloadBlob } from '../../utils/download';
+import { useEffect, useRef, useState } from "react";
+import { Check, X } from "lucide-react";
+import { Modal } from "../../components/ui/Modal";
+import { Button } from "../../components/ui/Button";
+import { downloadBlob } from "../../utils/download";
 
 interface ScreenshotCaptureProps {
   active: boolean;
   onComplete: () => void;
 }
 
-export function ScreenshotCapture({ active, onComplete }: ScreenshotCaptureProps) {
+export function ScreenshotCapture({
+  active,
+  onComplete,
+}: ScreenshotCaptureProps) {
   const [preview, setPreview] = useState<string | null>(null);
-  const [quality, setQuality] = useState<'high' | 'medium' | 'low'>('high');
+  const [quality, setQuality] = useState<"high" | "medium" | "low">("high");
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const selectionRef = useRef<HTMLDivElement | null>(null);
@@ -29,9 +32,9 @@ export function ScreenshotCapture({ active, onComplete }: ScreenshotCaptureProps
       startPos.current = { x: e.clientX, y: e.clientY };
       selection.style.left = `${e.clientX}px`;
       selection.style.top = `${e.clientY}px`;
-      selection.style.width = '0px';
-      selection.style.height = '0px';
-      selection.style.display = 'block';
+      selection.style.width = "0px";
+      selection.style.height = "0px";
+      selection.style.display = "block";
     };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -50,14 +53,14 @@ export function ScreenshotCapture({ active, onComplete }: ScreenshotCaptureProps
       startPos.current = null;
     };
 
-    overlay.addEventListener('mousedown', onMouseDown);
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
+    overlay.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
 
     return () => {
-      overlay.removeEventListener('mousedown', onMouseDown);
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
+      overlay.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
     };
   }, [active]);
 
@@ -65,15 +68,20 @@ export function ScreenshotCapture({ active, onComplete }: ScreenshotCaptureProps
 
   const capture = async () => {
     try {
-      const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
-      const dataUrl = await browser.tabs.captureVisibleTab(tab.windowId, { format: 'png' });
+      const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+      const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
+        format: "png",
+      });
 
       const img = new Image();
       img.src = dataUrl;
       await new Promise((resolve) => (img.onload = () => resolve(null)));
 
-      const canvas = (canvasRef.current ||= document.createElement('canvas'));
-      const ctx = canvas.getContext('2d');
+      const canvas = (canvasRef.current ||= document.createElement("canvas"));
+      const ctx = canvas.getContext("2d");
       if (!ctx || !overlayRef.current || !selectionRef.current) return;
 
       const rect = selectionRef.current.getBoundingClientRect();
@@ -91,14 +99,15 @@ export function ScreenshotCapture({ active, onComplete }: ScreenshotCaptureProps
         0,
         0,
         canvas.width,
-        canvas.height,
+        canvas.height
       );
 
-      const qualityFactor = quality === 'high' ? 0.92 : quality === 'medium' ? 0.8 : 0.6;
-      const croppedDataUrl = canvas.toDataURL('image/png', qualityFactor);
+      const qualityFactor =
+        quality === "high" ? 0.92 : quality === "medium" ? 0.8 : 0.6;
+      const croppedDataUrl = canvas.toDataURL("image/png", qualityFactor);
       setPreview(croppedDataUrl);
     } catch (error) {
-      console.error('Failed to capture screenshot', error);
+      console.error("Failed to capture screenshot", error);
       onComplete();
     }
   };
@@ -107,7 +116,7 @@ export function ScreenshotCapture({ active, onComplete }: ScreenshotCaptureProps
     if (!preview) return;
     const res = await fetch(preview);
     const blob = await res.blob();
-    await downloadBlob(blob, { kind: 'screenshot', mimeType: 'image/png' });
+    await downloadBlob(blob, { kind: "screenshot", mimeType: "image/png" });
     setPreview(null);
     onComplete();
   };
@@ -116,13 +125,13 @@ export function ScreenshotCapture({ active, onComplete }: ScreenshotCaptureProps
     <>
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-[999998] bg-black/40 cursor-crosshair"
+        className="fixed inset-0 z-999998 bg-black/40 cursor-crosshair"
         aria-label="Screenshot overlay"
       >
         <div
           ref={selectionRef}
           className="absolute border border-dashed border-red-400 bg-red-500/10"
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
         />
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-slate-950/90 px-4 py-2 text-[11px] text-slate-100 flex items-center gap-3">
           <span>Select area to capture</span>
@@ -163,7 +172,11 @@ export function ScreenshotCapture({ active, onComplete }: ScreenshotCaptureProps
         }
       >
         {preview && (
-          <img src={preview} alt="Screenshot preview" className="max-h-80 w-full object-contain" />
+          <img
+            src={preview}
+            alt="Screenshot preview"
+            className="max-h-80 w-full object-contain"
+          />
         )}
       </Modal>
     </>

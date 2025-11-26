@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { SettingsPanel } from "./SettingsPanel";
-import { ControlsPanel, RecordingStatus } from "./ControlsPanel";
+import { ControlsPanel, type RecordingStatus } from "./ControlsPanel";
 import { CameraPreview } from "./CameraPreview";
 import { ScreenshotCapture } from "./ScreenshotCapture";
 import { useScreenCapture } from "../../hooks/useScreenCapture";
 import { useMediaRecorder } from "../../hooks/useMediaRecorder";
 import { useAudioStream } from "../../hooks/useAudioStream";
-import { RecorderSettings, getSettings } from "../../utils/storage";
 import { downloadBlob } from "../../utils/download";
 import { addRecordingHistory } from "../../utils/history";
 import { showRecordingNotification } from "../../utils/permissions";
+import { getSettings, type RecorderSettings } from "../../utils/storage";
 
 export function OverlayRoot() {
   const [visible, setVisible] = useState(false);
@@ -59,7 +59,7 @@ export function OverlayRoot() {
     };
     window.addEventListener("beforeunload", beforeUnload);
 
-    const msgHandler = (event: MessageEvent) => {
+    const msgHandler = () => {
       // Not used; Chrome extensions use browser.runtime.onMessage. See below.
     };
     window.addEventListener("message", msgHandler);
@@ -221,7 +221,7 @@ export function OverlayRoot() {
   return (
     <>
       {countdown != null && (
-        <div className="fixed bottom-8 left-8 z-[999999] flex h-24 w-24 items-center justify-center rounded-full bg-black/70 text-3xl font-semibold text-white">
+        <div className="fixed bottom-8 left-8 z-999999 flex h-24 w-24 items-center justify-center rounded-full bg-black/70 text-3xl font-semibold text-white">
           {countdown}
         </div>
       )}

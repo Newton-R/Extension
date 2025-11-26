@@ -1,10 +1,10 @@
 export default defineBackground(() => {
-  console.log("ProRecorder background ready", { id: browser.runtime.id });
+  console.log("ProRecorder background ready", { id: chrome.runtime.id });
 
   // Open overlay when the toolbar icon is clicked
-  browser.action.onClicked.addListener(async (tab) => {
+  chrome.action.onClicked.addListener(async (tab) => {
     if (!tab.id) return;
-    await browser.tabs
+    await chrome.tabs
       .sendMessage(tab.id, { type: "SHOW_OVERLAY" })
       .catch(() => {
         // Content script might not be injected yet for some URLs
@@ -12,35 +12,35 @@ export default defineBackground(() => {
   });
 
   // Handle keyboard shortcuts (commands)
-  browser.commands?.onCommand.addListener(async (command) => {
-    const [tab] = await browser.tabs.query({
+  chrome.commands?.onCommand.addListener(async (command) => {
+    const [tab] = await chrome.tabs.query({
       active: true,
       currentWindow: true,
     });
     if (!tab?.id) return;
 
     if (command === "start-recording") {
-      await browser.tabs.sendMessage(tab.id, {
+      await chrome.tabs.sendMessage(tab.id, {
         type: "COMMAND_START_RECORDING",
       });
     } else if (command === "stop-recording") {
-      await browser.tabs.sendMessage(tab.id, {
+      await chrome.tabs.sendMessage(tab.id, {
         type: "COMMAND_STOP_RECORDING",
       });
     } else if (command === "take-screenshot") {
-      await browser.tabs.sendMessage(tab.id, {
+      await chrome.tabs.sendMessage(tab.id, {
         type: "COMMAND_TAKE_SCREENSHOT",
       });
     }
   });
 
-  browser.runtime.onMessage.addListener(async (message, sender) => {
+  chrome.runtime.onMessage.addListener(async (message, sender) => {
     console.log("background: received runtime message", { message, sender });
 
     // If message is coming from popup (no sender.tab) forward to the active tab
     const sendToActiveTab = async (payload: any) => {
-      // reference webextension API from globalThis to avoid relying on global 'browser' symbol
-      const webext = (globalThis as any).browser ?? (globalThis as any).chrome;
+      // reference webextension API from globalThis to avoid relying on global 'chrome' symbol
+      const webext = (globalThis as any).chrome ?? (globalThis as any).chrome;
 
       // try sender.tab first
       if (sender?.tab?.id) {
@@ -265,3 +265,7 @@ export default defineBackground(() => {
     }
   });
 });
+function defineBackground(arg0: () => void) {
+  console.log(arg0);
+  throw new Error("Function not implemented.");
+}

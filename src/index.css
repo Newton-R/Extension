@@ -121,10 +121,7 @@ body {
 @layer base {
   .floating-panel {
     /* Always float above page UI */
-    @apply fixed z-[9999999999] rounded-2xl animate-[slide-in_0.28s_ease-out];
-    background-color: rgba(15, 23, 42, 0.95); /* dark translucent base */
-    color: var(--recorder-white);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    @apply fixed z-9999999999 rounded-2xl animate-[slide-in_0.28s_ease-out] bg-background border-border;
     box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6), 0 2px 6px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(6px);
   }
@@ -162,13 +159,7 @@ body {
   }
 
   .camera-preview {
-    @apply fixed rounded-2xl overflow-hidden;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.03),
-      rgba(255, 255, 255, 0.02)
-    );
-    border: 2px solid rgba(255, 255, 255, 0.06);
+    @apply fixed rounded-2xl overflow-hidden z-9999999999 border-border;
     box-shadow: 0 14px 40px rgba(2, 6, 23, 0.7), 0 4px 12px rgba(0, 0, 0, 0.5);
     z-index: 9999999999;
   }
@@ -188,6 +179,7 @@ body {
   .floating-panel *,
   .camera-preview *,
   .modal-root * {
+    pointer-events: auto;
     pointer-events: auto;
   }
 
