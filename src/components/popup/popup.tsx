@@ -13,13 +13,13 @@ export const Popup = () => {
         <button
           key={id}
           onClick={() => handleQuickStart(mode)}
-          className="group rounded-2xl border border-slate-800 bg-slate-900/80 p-3 text-left hover:border-red-500/70 hover:bg-slate-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+          className="group rounded-2xl border border-border bg-background/80 p-3 text-left hover:border-primary/70 hover:bg-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-ring-offset-background"
         >
           <div className="flex items-center justify-between">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-slate-800 text-slate-100 group-hover:bg-red-500 group-hover:text-white transition-colors">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-muted group-hover:bg-primary group-hover:text-white transition-colors">
               <Icon className="h-4 w-4" />
             </span>
-            <Clock className="h-3 w-3 text-slate-500" />
+            <Clock className="h-3 w-3 text-muted-foreground" />
           </div>
           <div className="mt-3">
             <p className="text-xs font-semibold text-slate-50">{label}</p>
