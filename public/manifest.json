@@ -1,13 +1,50 @@
 {
     "manifest_version": 3,
-    "name": "My Extension",
+    "name": "Recorder Pro",
     "version": "1.0",
-    "description": "An example Chrome extension.",
+    "description": "Professional screen, video, and audio recording with live camera preview.",
     "permissions": [
+        "activeTab",
+        "tabCapture",
+        "desktopCapture",
         "storage",
-        "tabs"
+        "downloads",
+        "notifications",
+        "background",
+        "clipboardRead",
+        "clipboardWrite",
+        "debugger",
+        "geolocation",
+        "sidePanel"
+    ],
+    "host_permissions": [
+        "<all_urls>"
     ],
     "action": {
-        "default_popup": "index.html"   
+        "default_title": "Start Recording",
+        "default_popup": "index.html"
+    },
+    "commands": {
+        "start-recording": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+F",
+                "mac": "Command+Shift+F"
+            },
+            "description": "Start recording"
+        },
+        "stop-recording": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+S",
+                "mac": "Command+Shift+S"
+            },
+            "description": "Stop recording"
+        },
+        "take-screenshot": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+X",
+                "mac": "Command+Shift+X"
+            },
+            "description": "Take screenshot"
+        }
     }
 }
