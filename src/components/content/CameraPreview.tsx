@@ -33,7 +33,7 @@ export function CameraPreview({ open }: CameraPreviewProps) {
 
   return (
     <div
-      className={`camera-preview h-44 w-44 bottom-4 left-4 flex flex-col floating-panel cursor-grab rounded-full border-border`}
+      className={`camera-preview h-44 w-44 bottom-4 left-4 flex flex-col bg-amber-500 floating-panel cursor-grab rounded-full border-border`}
       aria-label="Camera preview"
       onMouseDown={onMouseDown}
       style={style}
@@ -47,3 +47,4 @@ export function CameraPreview({ open }: CameraPreviewProps) {
     </div>
   );
 }
+
