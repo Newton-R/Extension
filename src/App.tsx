@@ -13,13 +13,3 @@ function App() {
 }
 
 export default App;
-
-//  <Wrapper>
-//    <div className="min-w-[320px] max-w-md bg-background text-foreground p-4 space-y-4 rounded-xl">
-//      <Header />
-//      <Popup />
-//      <Footer />
-//    </div>
-//    <SettingsPanel open onClose={handleClose} onApply={() => {}} />
-//    <CameraPreview open />
-//  </Wrapper>;
