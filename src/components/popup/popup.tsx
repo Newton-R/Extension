@@ -1,18 +1,48 @@
 import { Clock } from "lucide-react";
 import { quickActions } from "../../constants";
+import { createRoot } from "react-dom/client";
+import {CameraPreview} from "../content/CameraPreview";
+import { useState } from "react";
+
 
 export const Popup = () => {
-  const handleQuickStart = async (mode: string) => {
-    await chrome.runtime.sendMessage({ type: "OPEN_OVERLAY_AND_START", mode });
 
-    window.close();
-  };
+  const [ mode, setMode] = useState("")
+
+  // const handleQuickStart = async (mode: string) => {
+  //   await chrome.runtime.sendMessage({ type: "OPEN_OVERLAY_AND_START", mode });
+  //   window.close();
+  // };
+
+  const handlestart = async (mode:string) => {
+    console.log("Clicked")
+    setMode(mode)
+    const [tab] = await chrome.tabs.query({ active: true})
+    chrome.scripting.executeScript<string[], void>({
+      target: {tabId: tab.id!},
+      args: [mode!],
+      func: (mode) => {
+        const container = document.createElement("div");
+        container.id = "my-extension-root";
+        document.body.appendChild(container);
+        container.style.position = "fixed";
+        container.style.bottom = "0";
+        container.style.minWidth = "100vh"
+        container.style.minHeight = "100vh"
+        container.style.backgroundColor = "red" 
+        container.style.zIndex = '2898490'
+        const root = createRoot(container)
+        root.render(<CameraPreview open={true}/>)
+      }
+    })
+  }
+
   return (
     <section className="grid grid-cols-2 gap-3">
       {quickActions.map(({ id, icon: Icon, label, description, mode }) => (
         <button
           key={id}
-          onClick={() => handleQuickStart(mode)}
+          onClick={() => handlestart(mode)}
           className="group rounded-2xl border border-border bg-background/80 p-3 text-left hover:border-primary/70 hover:bg-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-ring-offset-background"
         >
           <div className="flex items-center justify-between">
